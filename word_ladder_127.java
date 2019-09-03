@@ -5,17 +5,17 @@ import java.util.*;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class word_ladder_127 {
-    public int ladderLength(String beginWord, String endWord, List<String> wordList) {
+    public static int ladderLength(String beginWord, String endWord, List<String> wordList) {
         int L = beginWord.length();
-        Map<String, ArrayList<String>> allComboDicct = new HashMap<>();
+        Map<String, ArrayList<String>> allComboDict = new HashMap<>();
         wordList.forEach(
                 word -> {
                     for (int i = 0; i < L; i++) {
                         String newWord = word.substring(0, i) + '*' + word.substring(i + 1, L);
                         ArrayList<String> transformations =
-                                allComboDicct.getOrDefault(newWord, new ArrayList<>());
+                                allComboDict.getOrDefault(newWord, new ArrayList<>());
                         transformations.add(word);
-                        allComboDicct.put(word, transformations);
+                        allComboDict.put(word, transformations);
                     }
                 });
         Queue<Pair<String, Integer>> Q = new LinkedList<>();
@@ -31,7 +31,7 @@ public class word_ladder_127 {
 
             for (int i = 0; i < L; ++i) {
                 String newWord = word.substring(0, i) + '*' + word.substring(i + 1, L);
-                for (String adjacentWord : allComboDicct.getOrDefault(newWord, new ArrayList<>())) {
+                for (String adjacentWord : allComboDict.getOrDefault(newWord, new ArrayList<>())) {
                     if (adjacentWord.equals(endWord))
                         return level + 1;
                     if (!isVisited.containsKey(adjacentWord)) {
@@ -42,5 +42,11 @@ public class word_ladder_127 {
             }
         }
         return 0;
+    }
+
+    public static void main (String[] args) {
+        String beginword = "hit", endword = "dog";
+        List<String> wordList = Arrays.asList("hot","dot","dog","lot","log","cog");
+        int res = ladderLength(beginword, endword, wordList);
     }
 }
